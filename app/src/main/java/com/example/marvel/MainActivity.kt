@@ -11,7 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.marvel.Data.local.DB.AppDatabase
+import com.example.marvel.Data.local.entities.charactersEntity
 import com.example.marvel.ui.theme.MarvelTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +30,13 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+        val db = AppDatabase.invoke(this)
+        val dao = db.provideMarvelDao()
+
+        GlobalScope.launch {
+            val sampleChar = charactersEntity(50,"marvel","movie","2020","html")
+            dao.addOne(sampleChar)
         }
     }
 }
